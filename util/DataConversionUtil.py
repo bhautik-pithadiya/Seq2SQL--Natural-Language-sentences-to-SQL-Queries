@@ -4,6 +4,7 @@ from library.table import Table
 from library.query import Query
 import pandas as pd
 import nltk
+from tqdm import tqdm
 
 
 class DataConversionUtil:
@@ -73,7 +74,7 @@ class DataConversionUtil:
 
         # stop_limit = 10
         # iterate over the queries and convert each one to plain text sql
-        for index, line in queries.iterrows():
+        for index, line in tqdm(queries.iterrows(), total=len(queries)):
             count += 1
             # get table and query representations
             table, query = self.get_query_from_json(line)

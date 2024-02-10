@@ -9,3 +9,4 @@ saved_model/*
 !saved_model/.keep
 .idea/*
 data/*
+data.tar.bz2
