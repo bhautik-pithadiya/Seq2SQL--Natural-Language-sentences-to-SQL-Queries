@@ -10,6 +10,8 @@ from baseline.model.encoder import EncoderRNN
 from baseline.model.decoder import DecoderRNN
 from baseline.model.decoder import AttnDecoderRNN
 from util.constants import *
+import time
+from datetime import timedelta
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -95,8 +97,9 @@ def trainIters(encoder, decoder, n_iters, print_every=10, plot_every=20, learnin
     decoder_optimizer = optim.Adam(decoder.parameters(), lr=learning_rate)
     training_pairs = [tensorsFromPair(random.choice(pairs), input_lang, output_lang) for i in range(n_iters)]
     criterion = nn.CrossEntropyLoss()
-
+    s = time.time()
     for iter in range(1, n_iters + 1):
+        
         training_pair = training_pairs[iter - 1]
         input_tensor = training_pair[0]
         target_tensor = training_pair[1]
@@ -109,7 +112,12 @@ def trainIters(encoder, decoder, n_iters, print_every=10, plot_every=20, learnin
         if iter % print_every == 0:
             print_loss_avg = print_loss_total / print_every
             print_loss_total = 0
-            print('(%d %d%%) %.4f' % (iter, iter / n_iters * 100, print_loss_avg))
+            time_taken = time.time() - s
+            s = time.time()
+            if  time_taken<= 60:
+                print('(%d %d%%) %.4f %d seconds' % (iter, iter / n_iters * 100, print_loss_avg,time_taken))
+            else:
+                print('(%d %d%%) %.4f %d minutes' % (iter, iter / n_iters * 100, print_loss_avg,timedelta(seconds=time_taken)))
 
         if iter % plot_every == 0:
             plot_loss_avg = plot_loss_total / plot_every

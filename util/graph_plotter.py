@@ -6,7 +6,12 @@ def showPlot(points, plot_name):
     plt.figure()
     fig, ax = plt.subplots()
     # this locator puts ticks at regular intervals
-    loc = ticker.MultipleLocator(base=0.2)
+    # loc = ticker.MultipleLocator(base=0.2)
+    # loc.MAXTICKS = 1500
+    if max(points) - min(points) < 10:
+        loc = ticker.MultipleLocator(base=1)
+    else:
+        loc = ticker.MaxNLocator(nbins=10)
     ax.yaxis.set_major_locator(loc)
     plt.plot(points)
     plt.savefig(plot_name + ".png")
