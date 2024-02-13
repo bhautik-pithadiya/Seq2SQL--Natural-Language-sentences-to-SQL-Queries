@@ -76,7 +76,7 @@ def hyperparam(hidden_size):
     input_lang, output_lang, pairs = prepareValData("en", "sql")
     encoder1 = EncoderRNN(input_lang.n_words, hidden_size).to(device)
     attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
-    lr = [0.0001, 0.001, 0.01, 0.1, 1]
+    lr = [0.0001, 0.001, 0.01]#,0.1, 1]
     high = 0
     best_lr = 0
     for l in lr:
@@ -117,7 +117,8 @@ def trainIters(encoder, decoder, n_iters, print_every=10, plot_every=20, learnin
             if  time_taken<= 60:
                 print('(%d %d%%) %.4f %d seconds' % (iter, iter / n_iters * 100, print_loss_avg,time_taken))
             else:
-                print('(%d %d%%) %.4f %d minutes' % (iter, iter / n_iters * 100, print_loss_avg,timedelta(seconds=time_taken)))
+                # print(f'({iter} {iter/n_iters * 100 :.2f} %) {print_loss_avg:.4f}')
+                print('(%d %d%%) %.4f %d minutes' % (iter, iter / n_iters * 100, print_loss_avg,time_taken/60))
 
         if iter % plot_every == 0:
             plot_loss_avg = plot_loss_total / plot_every
