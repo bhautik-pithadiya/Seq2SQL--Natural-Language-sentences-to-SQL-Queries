@@ -2,6 +2,7 @@ from util.utils import *
 from seq2sql.model.seq2sql import Seq2SQL
 from util.constants import *
 from util.graph_plotter import plot_data
+from tqdm import tqdm
 
 
 def train_seq2sql():
@@ -38,7 +39,7 @@ def train_seq2sql():
     # Store the losses per epoch for loss curve
     epoch_losses = []
 
-    for i in range(TRAINING_EPOCHS):
+    for i in tqdm(range(TRAINING_EPOCHS),total=TRAINING_EPOCHS):
         print('Epoch :', i + 1)
         
         # Train the model on training dataset only

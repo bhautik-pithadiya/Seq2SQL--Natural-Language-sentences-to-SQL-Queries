@@ -5,10 +5,10 @@ from seq2sql import test as test_target
 import time
 from datetime import timedelta
 
-start = time.time()
-print("Running baseline")
+# start = time.time()
+# print("Running baseline")
 baseline.run_baseline()
-print('Baseline Time Taken : ', timedelta(seconds=(time.time() - start)))
+# print('Baseline Time Taken : ', timedelta(seconds=(time.time() - start)))
 
 start1 = time.time()
 print("Training target model")
@@ -21,4 +21,4 @@ test_target.test_seq2sql()
 print("Testing Time taken : ", timedelta(seconds=(time.time() - start2)))
 
 
-print('Total Time Taken : ', timedelta(seconds=(time.time() - start)))
+print('Total Time Taken : ', timedelta(seconds=(time.time() - start1)))

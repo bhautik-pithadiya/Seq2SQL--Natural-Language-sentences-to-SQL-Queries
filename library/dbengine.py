@@ -1,5 +1,6 @@
 import records
 import re
+# import sqlite
 from babel.numbers import parse_decimal, NumberFormatError
 
 schema_re = re.compile(r'\((.+)\)')
@@ -13,7 +14,8 @@ class DBEngine:
 
     def __init__(self, fdb):
         self.db = records.Database('sqlite:///{}'.format(fdb))
-        self.conn = self.db.get_connection()
+        # self.conn = self.db.get_connection()
+        self.conn = self.db
 
     def execute_query(self, table_id, query, *args, **kwargs):
         return self.execute(table_id, query.sel_index, query.agg_index, query.conditions, *args, **kwargs)
