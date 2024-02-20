@@ -7,7 +7,7 @@ from datetime import timedelta
 
 # start = time.time()
 # print("Running baseline")
-baseline.run_baseline()
+# baseline.run_baseline()
 # print('Baseline Time Taken : ', timedelta(seconds=(time.time() - start)))
 
 start1 = time.time()

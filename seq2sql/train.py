@@ -29,6 +29,7 @@ def train_seq2sql():
     best_sel_idx = 0
     best_cond_acc = init_acc[1][2]
     best_cond_idx = 0
+    output = 'Initial dev accuracy: %s\n  breakdown on (agg, sel, where): %s' % init_acc + '\n'
     print('Initial dev accuracy: %s\n  breakdown on (agg, sel, where): %s' % init_acc)
 
     # Save the untrained model as the initial best
@@ -40,6 +41,7 @@ def train_seq2sql():
     epoch_losses = []
 
     for i in tqdm(range(TRAINING_EPOCHS),total=TRAINING_EPOCHS):
+        output += "****************Epoch %d Started********************" %(i+1) + "\n"
         print('Epoch :', i + 1)
         
         # Train the model on training dataset only
@@ -47,14 +49,18 @@ def train_seq2sql():
         epoch_losses.append(epoch_loss)
 
         print('Loss =', epoch_loss)
+        output += "Loss = %d " %epoch_loss + "\n"
 
         # Check model accuracy on training and validation set
         training_accuracy = epoch_acc(model, BATCH_SIZE, sql_data, table_data)
+    
         print('Train accuracy: %s\n   breakdown result: %s' % training_accuracy)
+        output+= 'Initial dev accuracy: %s\n  breakdown on (agg, sel, where): %s' % init_acc +"\n"
         
         validation_accuracy = epoch_acc(model, BATCH_SIZE, validation_sql_data, validation_table_data)
         print('Dev accuracy: %s\n   breakdown result: %s' % validation_accuracy)
-        
+        output+= 'Dev accuracy: %s\n   breakdown result: %s \n' % validation_accuracy
+    
         # If the accuracy is better than the previous best, update the best scores and models
         if validation_accuracy[1][0] > best_agg_acc:
             best_agg_acc = validation_accuracy[1][0]
@@ -72,7 +78,7 @@ def train_seq2sql():
         print('Best val accuracy = %s, on epoch %s individually' % (
             (best_agg_acc, best_sel_acc, best_cond_acc),
             (best_agg_idx, best_sel_idx, best_cond_idx)))
-
+        
     # save epoch vs loss graph
     plot_data(x = range(TRAINING_EPOCHS), y = epoch_losses, xlabel = "Epochs", ylabel = "Loss", label = "Loss Graph for target seq2sql model")
 
